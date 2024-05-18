@@ -33,6 +33,12 @@ def receive_udp_data():
             # Write the raw payload to a binary file
             with open('data.raw', 'ab') as file:
                 file.write(payload)
+            hex_pairs = [f'{payload[i]:02x}{payload[i+1]:02x}' for i in range(0, len(payload)-1, 2)]
+
+            # 追加写入文件
+            with open('data.txt', 'a') as file:
+                for hex_pair in hex_pairs:
+                    file.write(hex_pair + '\n')
         except socket.timeout:
             continue
         except Exception as e:

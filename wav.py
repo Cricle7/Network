@@ -2,7 +2,7 @@ import wave
 import numpy as np
 
 # 参数配置
-sample_rate = 44100
+sample_rate = 48000
 num_channels = 1
 sample_width = 2  # 16位
 
