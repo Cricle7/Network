@@ -19,22 +19,24 @@ local_port = 8081  # 选择一个未被使用的端口
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind((local_ip, local_port))
 
+with open('data.txt', 'w') as file_clear:
+    pass
 def receive_udp_data():
     while not stop_event.is_set():
         try:
             # 设置超时时间以便能够及时响应停止事件
-            sock.settimeout(1.0)
-            data, addr = sock.recvfrom(2048)
+            # sock.settimeout(1.0)
+            data, addr = sock.recvfrom(4096)
             print("从", addr, "收到数据:", data)
 
             # Extract payload (skip first 12 bytes)
             payload = data[12:]
             
             # Write the raw payload to a binary file
-            with open('data.raw', 'ab') as file:
-                file.write(payload)
+            #with open('data.raw', 'ab') as file:
+                #file.write(payload)
             hex_pairs = [f'{payload[i]:02x}{payload[i+1]:02x}' for i in range(0, len(payload)-1, 2)]
-            print("从", addr, "收到数据:", hex_pairs)
+            #print("从", addr, "收到数据:", hex_pairs)
 
             # 追加写入文件
             with open('data.txt', 'a') as file:
