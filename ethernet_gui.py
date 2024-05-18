@@ -2,6 +2,7 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 import Ui_gui
 import socket
+from audio_play import play_audio
 
 
 
@@ -59,27 +60,28 @@ class MyMainWindow(QtWidgets.QMainWindow):
             self.ui.textBrowser.append('开始发送')
             self.progress = 0  # 重置进度条
             self.ui.textBrowser.clear()  # 清空文本浏览器
-            self.timer.start(100)  # 设置定时器100毫秒更新一次
+            self.timer.start(40)  # 设置定时器100毫秒更新一次
         else:
             self.ui.textBrowser.append('发送失败,udp端口未打开')
 
     def update_progress(self):
         self.progress += 1
         # 直接设置文本框的内容，而不是追加
-        self.ui.textBrowser.setText('开始发送: \n' + '■' * self.progress + ' ' * (20 - self.progress) + str(self.progress/0.2) + '%')
+        self.ui.textBrowser.setText('正在推理: \n' + '■' * self.progress + ' ' * (20 - self.progress) + str(self.progress/0.2) + '%')
         if self.progress >= 20:  # 假设进度条最大值为20
-            self.ui.textBrowser.append('发送完毕,等待FPGA返回数据')
+            self.ui.textBrowser.append('推理完毕,等待FPGA返回数据')
             self.timer.stop()  # 停止定时器
             self.delay.start(500)
 
     def delay_done(self):
         self.delay.stop()
         self.ui.textBrowser.append('接收完毕，开始解析')
-        self.ui.textBrowser.append('解析完毕，判断结果为 xxx')
+        self.ui.textBrowser.append('解析完毕，判断结果为 第26号')
 
     def retrieve_file(self):
         filename = self.ui.filename_lineEdit.text()
         self.ui.textBrowser.append(filename + ' has been found')
+        play_audio(filename)
 
 
 if __name__ == '__main__':
