@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>440</width>
-    <height>326</height>
+    <width>896</width>
+    <height>566</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,21 +17,31 @@
    <widget class="QLineEdit" name="lineEdit">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>60</y>
-      <width>311</width>
-      <height>20</height>
+      <x>270</x>
+      <y>20</y>
+      <width>351</width>
+      <height>51</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>100</y>
-      <width>131</width>
-      <height>23</height>
+      <x>190</x>
+      <y>80</y>
+      <width>201</width>
+      <height>61</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>检索音频文件</string>
@@ -40,11 +50,16 @@
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>264</x>
-      <y>100</y>
-      <width>91</width>
-      <height>23</height>
+      <x>490</x>
+      <y>80</y>
+      <width>221</width>
+      <height>61</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>18</pointsize>
+     </font>
     </property>
     <property name="acceptDrops">
      <bool>true</bool>
@@ -56,11 +71,56 @@
    <widget class="QTextBrowser" name="textBrowser">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>130</y>
-      <width>311</width>
-      <height>151</height>
+      <x>160</x>
+      <y>240</y>
+      <width>591</width>
+      <height>241</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButton">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>155</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Socket open</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButton_2">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>190</y>
+      <width>171</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Socket close</string>
     </property>
    </widget>
   </widget>
@@ -69,7 +129,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>440</width>
+     <width>896</width>
      <height>23</height>
     </rect>
    </property>
