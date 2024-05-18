@@ -1,68 +1,54 @@
-import keyboard
-import numpy as np
-import pyaudio
+import sys
+import socket
+from PyQt5.QtWidgets import QApplication, QWidget, QRadioButton, QVBoxLayout, QLabel
 
-# 设置一个标志变量来控制循环
-running = True
+class SocketController(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.init_ui()
+        self.socket = None
 
+    def init_ui(self):
+        # 设置窗口标题
+        self.setWindowTitle('Socket Control Example')
 
-def end_loop():
-    global running
-    running = False
+        # 创建radio buttons
+        self.radio_open = QRadioButton('Open Socket')
+        self.radio_close = QRadioButton('Close Socket')
+        self.status_label = QLabel('Socket Status: Closed')
 
+        # 连接信号与槽
+        self.radio_open.toggled.connect(self.handle_socket)
+        self.radio_close.toggled.connect(self.handle_socket)
 
-# 监听P键，按下时调用end_loop函数
-keyboard.add_hotkey('p', end_loop)
+        # 设置布局
+        layout = QVBoxLayout()
+        layout.addWidget(self.radio_open)
+        layout.addWidget(self.radio_close)
+        layout.addWidget(self.status_label)
+        self.setLayout(layout)
 
+        # 设置窗口初始大小
+        self.resize(300, 150)
 
-# 生成1 kHz正弦波的函数
-def generate_sine_wave(frequency, sample_rate, duration):
-    t = np.linspace(0, duration, int(sample_rate * duration), False)
-    note = np.sin(2 * np.pi * frequency * t)
-    # 将正弦波信号转换为int16格式
-    audio_data = (note * 32767).astype(np.int16)
-    return audio_data
+    def handle_socket(self, checked):
+        if self.radio_open.isChecked():
+            # 尝试打开socket
+            if not self.socket:
+                self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                try:
+                    self.socket.connect(('localhost', 9999))  # 修改为你的服务器地址和端口
+                    self.status_label.setText('Socket Status: Opened')
+                except socket.error as e:
+                    self.status_label.setText(f'Failed to open socket: {e}')
+        elif self.radio_close.isChecked():
+            # 关闭socket
+            if self.socket:
+                self.socket.close()
+                self.socket = None
+                self.status_label.setText('Socket Status: Closed')
 
-# 音频流参数
-FORMAT = pyaudio.paInt16
-CHANNELS = 1
-RATE = 44100
-CHUNK = 1024  # 从数组中一次读取的样本数
-
-# 生成音频数据
-duration = 1  # 持续1秒
-frequency = 1000  # 1 kHz
-audio_data = generate_sine_wave(frequency, RATE, duration)
-
-# 初始化PyAudio
-audio = pyaudio.PyAudio()
-stream = audio.open(format=FORMAT, channels=CHANNELS, rate=RATE, output=True, frames_per_buffer=CHUNK)
-
-print("Playing audio...")
-
-index = 0
-
-while running:
-    # 如果当前读取的数据块将超出数组末尾，则重新开始
-    end_index = index + CHUNK
-    if end_index > len(audio_data):
-        end_index = CHUNK - (len(audio_data) - index)
-        data = np.concatenate((audio_data[index:], audio_data[:end_index])).tobytes()
-        index = end_index
-    else:
-        data = audio_data[index:end_index].tobytes()
-        index = end_index
-
-    # 播放音频数据
-    stream.write(data)
-
-    # 如果到达数据末尾，从头开始
-    if index >= len(audio_data):
-        index = 0
-
-
-# 关闭流
-stream.stop_stream()
-stream.close()
-audio.terminate()
-
+app = QApplication(sys.argv)
+window = SocketController()
+window.show()
+sys.exit(app.exec_())
