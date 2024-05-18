@@ -12,7 +12,7 @@ def hex_to_raw(input_file, output_file):
             raw_data = bytes.fromhex(hex_str)
             raw_file.write(raw_data)
 
-def raw_to_wav(input_file, output_file, sample_rate=44100):
+def raw_to_wav(input_file, output_file, sample_rate=16000):
     with open(input_file, 'rb') as raw_file:
         raw_data = raw_file.read()
     
